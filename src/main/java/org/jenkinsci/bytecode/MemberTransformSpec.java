@@ -37,8 +37,8 @@ final class MemberTransformSpec extends HashMap<NameAndType,Set<MemberAdapter>> 
         }
     }
 
-    void addRewriteSpec(String name, Class type, MemberAdapter c) {
-        NameAndType key = new NameAndType(Type.getDescriptor(type),name);
+    void addRewriteSpec(Class targetClass, String name, Class type, MemberAdapter c) {
+        NameAndType key = new NameAndType(targetClass.getName(), Type.getDescriptor(type),name);
 
         Set<MemberAdapter> specs = get(key);
         if (specs==null)  put(key, specs = new HashSet<MemberAdapter>());
@@ -56,7 +56,7 @@ final class MemberTransformSpec extends HashMap<NameAndType,Set<MemberAdapter>> 
     }
 
     public boolean rewrite(int opcode, String owner, String name, String desc, MethodVisitor base) {
-        Set<MemberAdapter> adapters = get(new NameAndType(desc, name));
+        Set<MemberAdapter> adapters = get(new NameAndType(owner, desc, name));
 
         boolean modified = false;
         if (adapters !=null) {

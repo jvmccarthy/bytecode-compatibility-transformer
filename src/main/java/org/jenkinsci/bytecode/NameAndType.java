@@ -10,32 +10,34 @@ import java.lang.reflect.Member;
  * @author Kohsuke Kawaguchi
  */
 final class NameAndType {
+    final String targetClass;
     final String name;
     final String descriptor;
 
-    NameAndType(String descriptor, String name) {
+    NameAndType(String targetClass, String descriptor, String name) {
+        this.targetClass = targetClass;
         this.descriptor = descriptor;
         this.name = name;
     }
 
     NameAndType(MemberRefConstant ref) {
-        this(ref.getDescriptor(),ref.getName());
+        this(ref.getClazz(), ref.getDescriptor(),ref.getName());
     }
 
     @Override
     public boolean equals(Object o) {
         NameAndType that = (NameAndType) o;
-        return descriptor.equals(that.descriptor) && name.equals(that.name);
+        return targetClass.equals(that.targetClass) && descriptor.equals(that.descriptor) && name.equals(that.name);
 
     }
 
     @Override
     public int hashCode() {
-        return 31*name.hashCode() + descriptor.hashCode();
+        return 31*name.hashCode() + descriptor.hashCode() + targetClass.hashCode();
     }
 
     @Override
     public String toString() {
-        return name+' '+descriptor;
+        return targetClass + "." + name+' '+descriptor;
     }
 }

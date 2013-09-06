@@ -69,7 +69,7 @@ public @interface AdaptField {
             assert mrs!=null;
 
             for (Class was : af.was()) {
-                spec.fields.addRewriteSpec(name, was, mrs);
+                spec.fields.addRewriteSpec(mem.getDeclaringClass(), name, was, mrs);
             }
         }
 
